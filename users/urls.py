@@ -1,0 +1,18 @@
+"""Users URLs."""
+
+# Django
+from django.urls import path
+from django.views.generic import TemplateView
+
+# View
+from users import views
+
+
+urlpatterns = [
+    path(
+        route='login/',
+        view=views.LoginView.as_view(),
+        name='login'
+    ),
+   
+]
