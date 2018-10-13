@@ -7,6 +7,12 @@ class Hotels(models.Model):
     """hotel model"""
     name=models.CharField(max_length=255)
     ubication=models.CharField(max_length=255, blank=True, null=True)
+    picture=models.ImageField(
+        upload_to='user/pictures',
+        blank=True,
+        null=True
+    )
+    
 
     def __str__(self):
         """returrn hotel name"""
@@ -15,8 +21,8 @@ class Hotels(models.Model):
 class RestrictionHotels(models.Model):
     """Restriction model for days off """
     id_hotel=models.ForeignKey(Hotels,on_delete=models.DO_NOTHING)
-    date_on=models.DateTimeField()
-    date_off=models.DateTimeField()
+    date_on=models.DateField()
+    date_off=models.DateField()
 
     #metadata
     created = models.DateTimeField(auto_now_add=True)
@@ -51,7 +57,7 @@ class Reservations(models.Model):
     commission=models.FloatField()
     total=models.FloatField()
     total_amc = models.FloatField()
-    observations=models.CharField(max_length=500)
+    observations=models.CharField(max_length=500,blank=True, null=True)
 
 
     #metadata

@@ -1,5 +1,7 @@
 {% extends "base/base.html" %}
 {% block head_content %}
+{% load staticfiles %}
+
 <style>
 
 
@@ -25,11 +27,76 @@ input:focus+.msg { opacity:1; }
       <div class="title_left">
        <h3> <i class="fa fa-calendar-o fa-1x"></i> Registro de Reservas</h3> 
       </div>
-
-   
     </div>
-
+    <form role="from" method="post" enctype="multipart/form-data">
+      
     <div class="clearfix"></div>
+   
+    {% if form.errors %}
+      {% for field in form %}
+      {% for error in field.errors %}
+      <div class="alert alert-danger alert-dismissable" role="alert">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Error1!</strong> campo {{field.label}} {{ field.errors }} 
+      </div>
+      {% endfor %}
+      {% endfor %}
+      {% endif %}
+      {% csrf_token %}
+    <!--hotel information end-->
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h4>Locación</h4>
+
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <div class="form-horizontal form-label-left">
+              <div class="col-md-6 col-sm-12 col-xs-12">
+                
+                <div class="form-group">
+                  <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                    {{form2.hotel.label}}
+                  </label>
+                  <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                    {{form2.hotel}}
+                  </div>
+
+                 
+
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 col-xs-12">
+                
+                <div class="form-group">
+                 
+
+                  <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                    Seleccione Habitación
+                  </label>
+                  {%if form.errors or messages %}
+                  {{form.id_room}} 
+                   {%else%}
+                  <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <select name="id_room" class="form-control" id="id_id_room" required >
+   
+                    <option value="0">----------</option>
+
+                  </select>    
+                  {%endif%}
+                  </div>
+
+                </div>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--hotel information end-->
     <!--gest information end-->
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
@@ -42,7 +109,7 @@ input:focus+.msg { opacity:1; }
           <div class="x_content">
             <div class="form-horizontal form-label-left">
               <div class="col-md-6 col-sm-12 col-xs-12">
-
+                
                 <div class="form-group">
                   <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                     {{form.name_guest.label}}
@@ -210,6 +277,12 @@ input:focus+.msg { opacity:1; }
 
                 </div>
               </div>
+              <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  {{form.observations.label}}
+                </label>
+              <div class="col-md-12">
+                  {{form.observations}}
+              </div>
 
 
 
@@ -217,12 +290,15 @@ input:focus+.msg { opacity:1; }
 
           </div>
           <div class="col-md-7 col-md-offset-3">
+              <input type="hidden" name="id_user_register" value="{{request.user.id}}">
+
             <button class="btn btn-success btn-block" type="submit">Registrar</button>
           </div>
         </div>
       </div>
     </div>
 
+    </form>
 
   </div>
 </div>
@@ -262,9 +338,32 @@ input:focus+.msg { opacity:1; }
 </div>
 {% endblock container %}
 {% block bottom_content %}
-<script type="text/javascript">
 
+
+<script type="text/javascript">
+{% if messages %}
+    swal({
+            title: '{% for error in messages %}{{ error }}{% endfor %}',
+            text: 'Reasignar fecha de estadía',
+            icon: 'error',
+            button: 'OK'
+          });
+{%endif%}
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
   function SaveDate() {
+    /*function to select the range of dates*/
+    document.getElementById("id_check_in").value = '';
+      document.getElementById("id_check_out").value = '';
     var range_data = document.getElementById("reservation").value;
     separated_data = range_data.split('-');
     check_in = separated_data[0].replace(/\s+/, "");
@@ -273,13 +372,47 @@ input:focus+.msg { opacity:1; }
       alert("Error en rango de fechas");
     }
     else {
-      document.getElementById("id_check_in").value = check_in;
-      document.getElementById("id_check_out").value = check_out;
+      document.getElementById("id_check_in").value = formatDate(check_in);
+      document.getElementById("id_check_out").value = formatDate(check_out);
       nights = (new Date(check_out) - new Date(check_in)) / 86400000;
       document.getElementById("id_nights").value = nights;
     }
 
     $('#myModal').modal('hide');
+  }
+  function SelectRoom() {
+    /*function to select the rooms asociated to the hotel*/
+    $.ajax({
+
+      url: '{% url 'reservations:ajax_get_rooms' %}',
+      data: {
+        hotel: $('#id_hotel').val(),
+
+        'csrfmiddlewaretoken': '{{ csrf_token }}'
+
+      },
+      dataType: 'text',
+      type: "POST",
+      success: function (response) {
+
+        if (response) {
+          $('#id_id_room').html('');
+          $('#id_id_room').append(response);
+
+        }
+        else {
+          swal({
+            title: 'Habitaciones no encontradas',
+            text: 'Porfavor agregar las habitaciones asociadas a dicho hotel',
+            icon: 'error',
+            button: 'OK'
+          });
+
+        }
+      }
+    });
+
+
   }
 
 
