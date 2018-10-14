@@ -9,5 +9,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     path('users/', include(('users.urls','users'),namespace='users')),
-    path('reservas/', include(('reservations.urls','reservations'),namespace='reservations')),
+    path('', include(('reservations.urls','reservations'),namespace='reservations')),
     ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -31,7 +31,8 @@ class ReservationsForms(forms.ModelForm):
             'total_amc',
             'observations',
 
-            'id_user_register'
+            'id_user_register',
+            'id_user_modify',
         ]
         labels={
             'id_room':'Seleccione Habitación',
@@ -68,11 +69,22 @@ class ReservationsForms(forms.ModelForm):
             'observations':forms.Textarea(attrs={'class':'form-control'}),
 
             'id_user_register':forms.HiddenInput(),
+            'id_user_modify':forms.HiddenInput(),
             }
                 
 class HotelsForms(forms.Form):
     """hotels form to consult the room"""
-    hotel=forms.ModelChoiceField(queryset=Hotels.objects.filter(),empty_label="------",label='Seleccionar Hotel', widget=forms.Select(attrs={'class':'form-control','onchange':'SelectRoom()' }))	
+    hotel=forms.ModelChoiceField(queryset=Hotels.objects.filter(),empty_label="------",label='Seleccionar Hotel', widget=forms.Select(attrs={'class':'form-control','onchange':'SelectRoom()' }))
+    
+
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.pop('instance', None)
+
+        super(HotelsForms, self).__init__(*args, **kwargs)
+
+        if self.instance:
+            self.initial['hotel'] = self.instance
+    
 
 
 

@@ -23,6 +23,9 @@
       <div class="col-md-12">
         <div class="x_panel">
           <div class="x_title">
+            <div class="col-md-2 col-sm-12 col-xs-12">
+            <a href="{% url 'reservations:selector' %}" class="btn btn-info"> <i class="fa fa-reply"></i>  </a>
+</div>
         <h3>Calendario de Reservas {{hotel_name}}</h3>
       
             
@@ -44,9 +47,19 @@
     <div class="modal-content">
 
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title" id="myModalLabel2">Información de la Reserva</h4>
+        
+        <div class="col-md-8">
+        <h4 class="modal-title" id="myModalLabel2">Información de la Reserva</h4></div>
+        <div class="col-md-4">
+          <div class="row">
+        <a id="edition-link"  class="btn btn-warning"> <i class="fa fa-pencil"></i> Editar</a>
+       <a id="delete-link" class="btn btn-danger"> <i class="fa fa-close"></i> Eliminar </a>
       </div>
+    </div>
+      </div>
+       
+    
+   
       <div class="modal-body">
 
         <div class="row">
@@ -58,13 +71,13 @@
                   Nombre
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input name="id_room" class="form-control" id="name_guest">
+                  <input name="id_room" class="form-control" readonly id="name_guest">
                 </div>
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Teléfono
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="telephone_guest">
+                  <input class="form-control" readonly id="telephone_guest">
                 </div>
               </div>
             </div>
@@ -74,13 +87,13 @@
                   Cedula
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="id_guest">
+                  <input class="form-control" readonly id="id_guest">
                 </div>
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Ciudad
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="city_guest">
+                  <input class="form-control" readonly id="city_guest">
                 </div>
 
               </div>
@@ -91,31 +104,31 @@
                   Ingreso
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="check_in">
+                  <input class="form-control" readonly id="check_in">
                 </div>
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Noches
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="nights">
+                  <input class="form-control" readonly id="nights">
                 </div>
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Número de niños
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="number_childs">
+                  <input class="form-control" readonly id="number_childs">
                 </div>
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Comisión
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="commission">
+                  <input class="form-control" readonly id="commission">
                 </div>
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Total AMC
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="total_amc">
+                  <input class="form-control" readonly id="total_amc">
                 </div>
               </div>
             </div>
@@ -125,31 +138,31 @@
                   Salida
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="check_out">
+                  <input class="form-control" readonly id="salida">
                 </div>
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Número de adultos
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="number_adults">
+                  <input class="form-control" readonly id="number_adults">
                 </div>
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Tarifa
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="rate">
+                  <input class="form-control" readonly id="rate">
                 </div>
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Total
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="total">
+                  <input class="form-control" readonly id="total">
                 </div>
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Responsable Registro
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" id="id_user_register">
+                  <input class="form-control" readonly id="id_user_register">
                 </div>
               </div>
             </div>
@@ -182,16 +195,16 @@
     <script src="{% static "vendors/fullcalendar/dist/fullcalendar.js" %}" ></script>
     <script src="{% static "vendors/fullcalendar/dist/lang/es.js" %}" ></script>
 <script type="text/javascript">
+/*function to validate that checkout value did not the same that checkin*/
 function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-
-    return [year, month, day].join('-');
+ 
+  if (date == null) {
+return 'Sin estadía (El mismo de entrada).'
+  }
+   
+    else{
+      return date.toISOString().split('T')[0]
+    }
 }
 	/* CALENDAR */
 		  
@@ -216,13 +229,14 @@ function formatDate(date) {
             selectable: true,
             selectHelper: true,
             eventClick: function(calEvent, jsEvent, view) {
+
 					$('#fc_edit').click();
 					$('#name_guest').val(calEvent.name_guest);
 					$('#id_guest').val(calEvent.id_guest);
 					$('#telephone_guest').val(calEvent.telephone_guest);
 					$('#city_guest').val(calEvent.city_guest);
-					$('#check_in').val(formatDate(calEvent.start));
-					$('#check_out').val(formatDate(calEvent.end));
+					$('#check_in').val(calEvent.start.toISOString().split('T')[0]);
+					$('#salida').val(formatDate(calEvent.end));
 					$('#nights').val(calEvent.nights);
 					$('#number_adults').val(calEvent.number_adults);
 					$('#number_childs').val(calEvent.number_childs);
@@ -231,15 +245,19 @@ function formatDate(date) {
 					$('#total').val(calEvent.total);
 					$('#total_amc').val(calEvent.total_amc);
 					$('#id_user_register').val(calEvent.id_user_register);
-
+          var edition = document.getElementById('edition-link');
+          var delete_url = document.getElementById('delete-link');
+          var url1 = "/reservas/edicion_reserva/";
+          var url3 = "/reservas/borrar_reserva/";
+          var parameter=calEvent.id 
+          var url2= "/";
+          var url_edit= url1.concat(parameter).concat(url2);
+          var url_delete= url3.concat(parameter).concat(url2);
+          edition.href = url_edit;
+          delete_url.href=url_delete;
 					categoryClass = $("#event_type").val();
-
-					$(".antosubmit2").on("click", function() {
-					  calEvent.title = $("#title2").val();
-
-					  calendar.fullCalendar('updateEvent', calEvent);
-					  $('.antoclose2').click();
-					});
+          
+				
 
 					calendar.fullCalendar('unselect');
 				  },
@@ -248,6 +266,7 @@ function formatDate(date) {
               {%for event in reservations%}
               {
             id:'{{event.id}}',
+            overlap:true,
             name_guest:'{{event.name_guest}}',
             telephone_guest:'{{event.telephone_guest}}',
             city_guest:'{{event.city_guest}}',
@@ -264,9 +283,23 @@ function formatDate(date) {
             total_amc:'${{event.total_amc}}',
             commission:'{{event.rate}}%',
             id_user_register:'{{event.id_user_register.get_full_name}}',
+            {% if event.id_room.id_hotel.id == 1 %}
+            color: '#5cb85c',
+            {% elif event.id_room.id_hotel.id == 2 %}
+            color: '#5bc0de',
+            {% elif event.id_room.id_hotel.id == 3 %}
+            color: '#d9534f',
+            {% elif event.id_room.id_hotel.id == 4 %}
+            color: '#428bca',
+            {% elif event.id_room.id_hotel.id == 5 %}
+            color: '#5bc0de',
 
+            {%endif%}
             },    {%endfor%}
-          ]
+          ],
+         
+          
+          
           });
           
         };

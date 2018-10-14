@@ -8,9 +8,14 @@ from reservations import views
 
 
 urlpatterns = [
-
     path(
         route='',
+        view=views.IndexView.as_view(),
+        name='index'
+    ),
+
+    path(
+        route='registrar/',
         view=views.RegisterReservationView,
         name='register'
     ),
@@ -28,6 +33,16 @@ urlpatterns = [
         route='selector/',
         view=views.SelectorHotel.as_view(),
         name='selector'
+    ),
+    path(
+        route='edicion_reserva/<int:reservation>/',
+        view=views.UpdateReservation.as_view(),
+        name='edition'
+    ),
+    path(
+        route='borrar_reserva/<int:reservation>/',
+        view=views.DeleteReservationView.as_view(),
+        name='delete'
     ),
   
 

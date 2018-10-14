@@ -4,9 +4,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, FormView,TemplateView
+from django.views.generic import ListView, DetailView, CreateView, FormView,TemplateView, UpdateView, DeleteView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.db.models import Count
 #Forms
 from reservations.forms import * 
 
@@ -18,6 +20,40 @@ from reservations.urls import *
 #Utils
 import sweetify
 from sweetify.views import SweetifySuccessMixin
+import datetime
+
+
+
+class IndexView(LoginRequiredMixin,TemplateView):
+    """View for Index"""
+    template_name='dashboard/index.html'
+
+    def get_context_data(self,**kwargs):
+        context=super().get_context_data(**kwargs)
+        hotels=Hotels.objects.all()
+        context['hotels']=hotels
+        reservations=Reservations.objects.all()
+        context['reservations']=reservations
+        context['rooms']=Rooms.objects.count()
+        today=datetime.datetime.now()
+        totalamc=0
+        list_hotels=[0]*(len(hotels)+1)
+        dic_money={}
+        for i in hotels:
+            dic_money[i.name] = 0
+        for i in reservations:
+            #the pay is efective when user doing checkout
+            if i.check_out.month == today.month:
+                totalamc += int(i.total_amc)
+                
+                list_hotels[i.id_room.id_hotel.id] += 1
+                dic_money[i.id_room.id_hotel.name]+= int(i.total_amc)
+        context['totalamc']=totalamc
+        context['dic_money']=dic_money
+        context['today']=today
+        
+        context['reservations_hotels']=list_hotels
+        return context
 
 @login_required
 def RegisterReservationView(request):
@@ -47,6 +83,7 @@ def RegisterReservationView(request):
         form2 = HotelsForms()
         
     return render(request,'dashboard/register.html',{'form': form,'form2': form2})
+@login_required
 def CalendarView(request,hotel):
     """Calendar view for each hotel information"""
     if hotel == 0:
@@ -66,7 +103,64 @@ class SelectorHotel(LoginRequiredMixin,ListView):
     queryset=Hotels.objects.all()
     context_object_name='hotels'
 
+class UpdateReservation(LoginRequiredMixin,UpdateView):
+    """Update view"""
+    form_class = ReservationsForms
+    template_name='dashboard/editor_register.html'
+    second_form_class=HotelsForms
+
+    def get_object(self, queryset=None):
+        """return object to edit"""
+        obj = Reservations.objects.get(id=self.kwargs['reservation'])
+        return obj
+    def get_context_data(self, *args, **kwargs):
+        """overload the context to add second form"""
+        context = super(UpdateReservation,self).get_context_data(*args, **kwargs)
+        hotel=self.object.id_room.id_hotel
+        if 'form2' not in context:
+            #form overload with instance 
+            context['form2'] = self.second_form_class(instance=hotel.id)
+        return context
+
+    def form_valid(self, form):
+        """When form is valid check the schedule availability"""
+        data=form.cleaned_data
+        check_in=data['check_in']
+        check_out=data['check_out']
+        reservation=Reservations.objects.get(id=self.kwargs['reservation'])
+        if (check_out >= check_in):
+            busy_room=Reservations.objects.filter(Q(id_room_id=reservation.id_room)&(Q(check_in__range=(check_in, check_out))|Q(check_out__range=(check_in, check_out)))).exclude(id=reservation.id)
+            busy_hotel=RestrictionHotels.objects.filter(Q(id_hotel=reservation.id_room.id_hotel.id)&(Q(date_on__range=(check_in, check_out))|Q(date_on__range=(check_in, check_out)))).exclude(id=reservation.id)
+            if busy_room or busy_hotel:
+                messages.error(self.request, "Habitación ocupada en el espacio de tiempo seleccionado!")
+                return self.form_invalid(form)
+        return super(UpdateReservation, self).form_valid(form)
+
+    def get_success_url(self):
+        """Returno to hotel schedule"""
+        room=self.object.id_room.id_hotel.id
+        sweetify.success(self.request,'Edición Exitosa')
+        return reverse_lazy('reservations:calendar', kwargs={'hotel':room})
+
+class DeleteReservationView(LoginRequiredMixin,DeleteView):
+    """Delete View"""
+    template_name='dashboard/delete_confirmation.html'
+    context_object_name='reservation'
+
+    def get_object(self, queryset=None):
+        """Get object to delete"""
+        obj = Reservations.objects.get(id=self.kwargs['reservation'])
+        return obj
+    def get_success_url(self):
+        """Returno to hotel schedule"""
+        room=self.object.id_room.id_hotel.id
+        print (self.object)
+        sweetify.success(self.request,'Reserva Eliminada')
+        return reverse_lazy('reservations:calendar', kwargs={'hotel':room})
+
+
 def ajax_get_rooms(request):
+    """Ajax to return the rooms for each hotel"""
     if request.method == 'POST':
         hotel=request.POST['hotel']
         rooms=Rooms.objects.filter(id_hotel=int(hotel))
