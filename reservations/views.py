@@ -21,6 +21,7 @@ from reservations.urls import *
 import sweetify
 from sweetify.views import SweetifySuccessMixin
 import datetime
+import string
 
 
 
@@ -69,7 +70,11 @@ def RegisterReservationView(request):
             id_room=data['id_room']
 
             if (check_out >= check_in):
-                busy_room=Reservations.objects.filter(Q(id_room_id=id_room)&(Q(check_in__range=(check_in, check_out))|Q(check_out__range=(check_in, check_out))))
+                #busca en el rango de la resrva no tener una superposicón con otra
+                #excepto si la fecha de entrada es igual a la de salida por calendario hotelero
+                busy_room=Reservations.objects.filter(Q(id_room_id=id_room)&(Q(check_in__range=(check_in, check_out))|Q(check_out__range=(check_in, check_out)))).exclude(Q(id_room_id=id_room)&(Q(check_out=check_in)|Q(check_in=check_out)))
+                print (busy_room.query)
+                #hotel ocupado por evento 
                 busy_hotel=RestrictionHotels.objects.filter(Q(id_hotel=id_room.id_hotel.id)&(Q(date_on__range=(check_in, check_out))|Q(date_on__range=(check_in, check_out))))
                 if busy_room or busy_hotel:
                     messages.error(request, "Habitación ocupada en el espacio de tiempo seleccionado!")
@@ -103,6 +108,48 @@ class SelectorHotel(LoginRequiredMixin,ListView):
     queryset=Hotels.objects.all()
     context_object_name='hotels'
 
+class Reports(LoginRequiredMixin,FormView):
+    """Reports View"""
+    template_name='dashboard/reports.html'
+    form_class=ReportsForms
+    
+    def post(self, request, *args, **kwargs):
+        """On post to report"""
+        form = self.get_form()
+       
+        if form.is_valid():
+            data=form.cleaned_data
+            hotel=data['hotel']
+            critery=data['critery']
+            rooms=Rooms.objects.filter(id_hotel=hotel).values('id')
+            if critery == '1':
+                #day
+                day=datetime.datetime.strptime(data['day'],'%m/%d/%Y').strftime('%Y-%m-%d')
+                reservations=Reservations.objects.filter(Q(id_room__in=rooms)&(Q(check_in=day)|Q(check_out=day)))
+            elif critery =='2':
+                #weak
+                range_date=data['weaks']
+                start,end=range_date.split('-')
+                start=start.replace(' ', '')
+                end=end.replace(' ','')
+                start=datetime.datetime.strptime(start,'%m/%d/%Y').strftime('%Y-%m-%d')
+                end=datetime.datetime.strptime(end,'%m/%d/%Y').strftime('%Y-%m-%d')
+                reservations=Reservations.objects.filter(Q(id_room__in=rooms)&(Q(check_in__range=(start, end))|Q(check_out__range=(start, end))))
+            elif critery == '3':
+                month=int(data['month'])
+                reservations=Reservations.objects.filter(Q(id_room__in=rooms)&(Q(check_in__month=month)|Q(check_out__month=month)))
+            if reservations:
+                sweetify.success(self.request,'Búsqueda Exitosa.')
+            else:
+                sweetify.error(self.request,'Ningún resultado para el criterio seleccionado')
+
+            return render(request, 'dashboard/reports.html', {'form': form ,'reservations':reservations})
+                
+            
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
 class UpdateReservation(LoginRequiredMixin,UpdateView):
     """Update view"""
     form_class = ReservationsForms
@@ -129,7 +176,7 @@ class UpdateReservation(LoginRequiredMixin,UpdateView):
         check_out=data['check_out']
         reservation=Reservations.objects.get(id=self.kwargs['reservation'])
         if (check_out >= check_in):
-            busy_room=Reservations.objects.filter(Q(id_room_id=reservation.id_room)&(Q(check_in__range=(check_in, check_out))|Q(check_out__range=(check_in, check_out)))).exclude(id=reservation.id)
+            busy_room=Reservations.objects.filter(Q(id_room_id=reservation.id_room)&(Q(check_in__range=(check_in, check_out))|Q(check_out__range=(check_in, check_out)))).exclude(id=reservation.id).exclude(Q(check_out=check_in)|Q(check_in=check_out))
             busy_hotel=RestrictionHotels.objects.filter(Q(id_hotel=reservation.id_room.id_hotel.id)&(Q(date_on__range=(check_in, check_out))|Q(date_on__range=(check_in, check_out)))).exclude(id=reservation.id)
             if busy_room or busy_hotel:
                 messages.error(self.request, "Habitación ocupada en el espacio de tiempo seleccionado!")
@@ -154,7 +201,7 @@ class DeleteReservationView(LoginRequiredMixin,DeleteView):
     def get_success_url(self):
         """Returno to hotel schedule"""
         room=self.object.id_room.id_hotel.id
-        print (self.object)
+        
         sweetify.success(self.request,'Reserva Eliminada')
         return reverse_lazy('reservations:calendar', kwargs={'hotel':room})
 

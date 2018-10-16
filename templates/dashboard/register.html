@@ -349,6 +349,19 @@ input:focus+.msg { opacity:1; }
             button: 'OK'
           });
 {%endif%}
+/*Function to calcle total*/
+function CalcleTotal(){
+  var nights=Number(document.getElementById("id_nights").value);
+  var rate=Number(document.getElementById("id_rate").value);
+  document.getElementById("id_total").value=nights*rate;
+}
+/*Function to calcle total AMC*/
+function CalcleTotalAmc(){
+  var total=Number(document.getElementById("id_total").value);
+  var commission=Number(document.getElementById("id_commission").value);
+  document.getElementById("id_total_amc").value=total*commission/100;
+}
+/*set format to date YY MM DD*/
 function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -368,15 +381,12 @@ function formatDate(date) {
     separated_data = range_data.split('-');
     check_in = separated_data[0].replace(/\s+/, "");
     check_out = separated_data[1].replace(/\s+/, "");
-    if (check_in > check_out) {
-      alert("Error en rango de fechas");
-    }
-    else {
+   
       document.getElementById("id_check_in").value = formatDate(check_in);
       document.getElementById("id_check_out").value = formatDate(check_out);
       nights = (new Date(check_out) - new Date(check_in)) / 86400000;
       document.getElementById("id_nights").value = nights;
-    }
+    
 
     $('#myModal').modal('hide');
   }

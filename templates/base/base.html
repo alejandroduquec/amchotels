@@ -75,7 +75,9 @@
                   </ul>
                 </li>
                 
+                <li><a href="{% url 'reservations:report' %}"><i class="fa fa-area-chart"></i>Reportes</a>
                 
+                </li>
                 
               </ul>
             </div>
@@ -106,7 +108,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="{% static "images/amc.png" %}" alt="">John Doe
+                    <img src="{% static "images/amc.png" %}" alt="">{{request.user.get_full_name}}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -128,7 +130,7 @@
 
       <footer>
         <div class="pull-right">
-           UpSolutions © 2018 Todos los derechos Reservados 
+           Ducode © 2018 Todos los derechos Reservados 
             
         </div>
         <div class="clearfix"></div>
@@ -144,6 +146,8 @@
     <script src="{% static "vendors/fastclick/lib/fastclick.js" %}"></script>
     <!-- NProgress -->
     <script src="{% static "vendors/nprogress/nprogress.js" %}"></script>
+    <script src="{% static "vendors/iCheck/icheck.min.js" %}"></script>
+
     <!-- Chart.js -->
     <script src="{% static "vendors/Chart.js/dist/Chart.min.js" %}"></script>
     <!-- gauge.js -->

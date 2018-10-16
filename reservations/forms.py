@@ -36,7 +36,7 @@ class ReservationsForms(forms.ModelForm):
         ]
         labels={
             'id_room':'Seleccione Habitación',
-            'name_guest':'Nombre ',
+            'name_guest':'Nombre Completo',
             'telephone_guest':'Teléfono ',
             'city_guest':'Ciudad ',
             'id_guest':'Cédula',
@@ -45,7 +45,7 @@ class ReservationsForms(forms.ModelForm):
             'nights':'Noches de Estadía',
             'number_adults':'Número de Adultos',
             'number_childs':'Número de Niños',
-            'rate':'Tarifa',
+            'rate':'Tarifa por Noche',
             'commission':'Porcentaje de Comisión',
             'total':'Total',
             'total_amc':'AMC Ingresos',
@@ -62,8 +62,8 @@ class ReservationsForms(forms.ModelForm):
             'nights':forms.TextInput(attrs={'class':'form-control','type':'number'}),
             'number_adults':forms.TextInput(attrs={'class':'form-control','type':'number'}),
             'number_childs':forms.TextInput(attrs={'class':'form-control','type':'number'}),
-            'rate':forms.TextInput(attrs={'class':'form-control','type':'number'}),
-            'commission':forms.TextInput(attrs={'class':'form-control','type':'number'}),
+            'rate':forms.TextInput(attrs={'class':'form-control','type':'number','onchange':'CalcleTotal()'}),
+            'commission':forms.TextInput(attrs={'class':'form-control','type':'number','onchange':'CalcleTotalAmc()'}),
             'total':forms.TextInput(attrs={'class':'form-control','type':'number'}),
             'total_amc':forms.TextInput(attrs={'class':'form-control','type':'number'}),
             'observations':forms.Textarea(attrs={'class':'form-control'}),
@@ -85,6 +85,23 @@ class HotelsForms(forms.Form):
         if self.instance:
             self.initial['hotel'] = self.instance
     
+class ReportsForms(forms.Form):
+    """Report Form by critery """
+    MONTH_CHOICE=((1,'Enero'),(2,'Febrero'),(3,'Marzo'),(4,'Abril'),(5,'Mayo'),(6,'Junio'),(7,'Julio'),(8,'Agosto'),(9,'Septiembre'),(10,'Octubre'),(11,'Noviembre'),(12,'Diciembre'))
+    CRITERY_CHOICE=((1,'Por día'),(2,'Semanal'),(3,'Mensual'))
+    critery=forms.ChoiceField(choices=CRITERY_CHOICE,label='Criterio de Reporte', widget=forms.Select(attrs={'class':'form-control'}), required= True)
+    hotel=forms.ModelChoiceField(queryset=Hotels.objects.filter(),empty_label="------",label='Seleccionar Hotel', widget=forms.Select(attrs={'class':'form-control'}),required= True)
+    
+    day=forms.CharField(label='Seleccionar día',widget=forms.DateInput(attrs={'class':'form-control','id':'single_cal3'}),required= False)
+    weaks=forms.CharField(label='Seleccionar Rango de Fechas',widget=forms.DateInput(attrs={'class':'form-control','id':'reservation'}),required= False)
+    month=forms.ChoiceField(choices= MONTH_CHOICE,initial={'max_number': '3'},label='Seleccionar Mes', widget=forms.Select(attrs={'class':'form-control'}),required= False)
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.pop('instance', None)
 
+        super(ReportsForms, self).__init__(*args, **kwargs)
+
+        if self.instance:
+            self.initial['month'] = self.instance
+    
 
 

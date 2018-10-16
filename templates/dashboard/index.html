@@ -34,13 +34,13 @@
           <div class="icon"><i class="fa fa-dollar"></i></div>
           <div class="count">{{totalamc}}</div>
           <h3>Recaudo</h3>
-          <p>Para el mes de {{today}} </p>
+          <p>Para el mes de {{today|date:"F"}} </p>
         </div>
       </div>
     </div>
 
 
-    <div class="col-md-8">
+    <div class="col-md-8 col-xs-12">
       <div class="x_panel">
 
         <div class="x_title">
@@ -50,7 +50,7 @@
         </div>
         <div class="x_content">
 
-          <div id="echart_donut1" style="height:350px;"></div>
+          <div id="echart_donut1" style="height:400px;"></div>
 
         </div>
       </div>
@@ -59,7 +59,7 @@
 
 
 
-  <div class="col-md-4">
+  <div class="col-md-4 col-xs-12">
     <div class="x_panel">
       <div class="x_title">
         <h2>Recaudo del mes </h2>
@@ -67,12 +67,9 @@
         <div class="clearfix"></div>
       </div>
       <div class="x_content">
-        <ul class="list-unstyled top_profiles scroll-view">
+        <ul class="list-unstyled  ">
           {% for name, money in dic_money.items %}
         
-          
-            
-          
           <li class="media event">
             <a class="pull-left border-aero profile_thumb">
               <i class="fa fa-building-o aero"></i>

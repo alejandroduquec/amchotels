@@ -247,8 +247,8 @@ return 'Sin estadía (El mismo de entrada).'
 					$('#id_user_register').val(calEvent.id_user_register);
           var edition = document.getElementById('edition-link');
           var delete_url = document.getElementById('delete-link');
-          var url1 = "/reservas/edicion_reserva/";
-          var url3 = "/reservas/borrar_reserva/";
+          var url1 = "/edicion_reserva/";
+          var url3 = "/borrar_reserva/";
           var parameter=calEvent.id 
           var url2= "/";
           var url_edit= url1.concat(parameter).concat(url2);
@@ -281,7 +281,7 @@ return 'Sin estadía (El mismo de entrada).'
             rate:'${{event.rate}}',
             total:'${{event.total}}',
             total_amc:'${{event.total_amc}}',
-            commission:'{{event.rate}}%',
+            commission:'{{event.commission}}%',
             id_user_register:'{{event.id_user_register.get_full_name}}',
             {% if event.id_room.id_hotel.id == 1 %}
             color: '#5cb85c',

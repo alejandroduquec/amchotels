@@ -65,9 +65,6 @@ class Reservations(models.Model):
     modified = models.DateTimeField(auto_now=True)
     id_user_register=models.ForeignKey(User,related_name='user_register_reservation', on_delete=models.DO_NOTHING)
     id_user_modify=models.ForeignKey(User,related_name='user_modify_reservation', blank=True, null=True, on_delete=models.DO_NOTHING)
-    def __str__(self):
-        """returrn hotel name"""
-        return self.id_room
-
+ 
 
 
