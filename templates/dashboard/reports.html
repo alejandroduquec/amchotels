@@ -2,14 +2,15 @@
 {% load staticfiles %}
 {% block head_content %}
 
-{% endblock head_content %}
-<!-- FullCalendar -->
-
 <link href="{% static "vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" %} " rel="stylesheet">
 <link href="{% static "vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" %} " rel="stylesheet">
 <link href="{% static "vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" %} " rel="stylesheet">
 <link href="{% static "vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" %} " rel="stylesheet">
 <link href="{% static "vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" %} " rel="stylesheet">
+
+{% endblock head_content %}
+<!-- FullCalendar -->
+
 {% block container %}
 <div class="right_col"role="main">
   <div class="">
@@ -146,8 +147,8 @@
                       <th>Niños</th>
 
 
-                      <th>Total</th>
-                      <th>Total AMC</th>
+                      <th class="sum">Total</th>
+                      <th class="sum">Total AMC</th>
 
 
                     </tr>
@@ -174,8 +175,30 @@
                     </tr>
                     {%endfor%}
                     {%endif%}
+                    
                   </tbody>
+                  <tfoot>
+                      <tr>
+                          <th>
+                          </th>
+                          <th>
+                            </th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th>
+                              Total
+                          </th>
+                          <th></th>
+                          <th></th>
 
+                       
+                      </tr>
+                  </tfoot>
+                 
                 </table>
 
               </div>
@@ -246,15 +269,31 @@
       var table = $('#datatable-reservations').dataTable({
         language: idioma_espanol,
         stateSave: true,
-        responsive: true,
+        responsive: false,
         dom: 'Blfrtip',
+        
         buttons: [
-          { extend: 'copy', text: 'Copiar' },
-          { extend: 'print', text: 'Imprimir', messageTop: 'listado Reservas' },
-          { extend: 'excel', text: 'Excel', messageTop: 'listado Reservas' },
-          { extend: 'csv', text: 'CSV' },
-          { extend: 'pdf', text: 'PDF', messageTop: 'listado Reservas' },
-        ],
+          { extend: 'copy', text: 'Copiar',footer: true },
+          { extend: 'print', text: 'Imprimir', messageTop: 'listado Reservas',footer: true  },
+          { extend: 'excel', text: 'Excel', messageTop: 'listado Reservas',footer: true  },
+          { extend: 'csv', text: 'CSV',footer: true  },
+          { extend: 'pdf', text: 'PDF', messageTop: 'listado Reservas',footer: true ,orientation:'landscape' },
+        ],"footerCallback": function(row, data, start, end, display) {
+                    var api = this.api();
+
+                    api.columns('.sum', { page: 'current' }).every(function () {
+                        var sum = this
+                            .data()
+                            .reduce(function (a, b) {
+                                var x = parseFloat(a) || 0;
+                                var y = parseFloat(b) || 0;
+                                return x + y;
+                            }, 0);
+                        console.log(sum); //alert(sum);
+                        $(this.footer()).html(sum);
+                    });
+                }
+        
       });
     });
 

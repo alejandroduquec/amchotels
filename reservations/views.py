@@ -158,6 +158,7 @@ class UpdateReservation(LoginRequiredMixin,UpdateView):
 
     def get_object(self, queryset=None):
         """return object to edit"""
+        
         obj = Reservations.objects.get(id=self.kwargs['reservation'])
         return obj
     def get_context_data(self, *args, **kwargs):
