@@ -34,9 +34,14 @@
 
             <div class="row">
 
-              {% for hotel in hotels%}
 
-<a href="{% url 'reservations:calendar' hotel.id %}">
+
+              {% for hotel in hotels%}
+              
+              {% if request.user.profile.role == 3 and hotel.id == 2 %}
+                
+              
+              <a href="{% url 'reservations:calendar' hotel.id %}">
               <div class="col-md-55">
                 <div class="thumbnail">
                   <div class="image view view-first">
@@ -48,6 +53,20 @@
                   </div>
                 </div>
               </div></a>
+              {%elif request.user.profile.role != 3%}
+              <a href="{% url 'reservations:calendar' hotel.id %}">
+                  <div class="col-md-55">
+                    <div class="thumbnail">
+                      <div class="image view view-first">
+                        <img style="width: 100%; display: block;height: 90%;padding: 10px" src="{{hotel.picture.url}}" alt="image" />
+    
+                      </div>
+                      <div class="caption">
+                        <p>{{hotel}}</p>
+                      </div>
+                    </div>
+                  </div></a>
+              {% endif %}
               {% endfor %}
 
 

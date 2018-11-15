@@ -30,6 +30,11 @@ urlpatterns = [
         name='calendar'
     ),
      path(
+        route='reportes/',
+        view=views.Reports.as_view(),
+        name='report'
+    ),
+    path(
         route='selector/',
         view=views.SelectorHotel.as_view(),
         name='selector'

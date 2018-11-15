@@ -1,0 +1,308 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+{% block head_content %}
+
+<link href="{% static "vendors/fullcalendar/dist/fullcalendar.min.css" %}" rel="stylesheet">
+{% endblock head_content %}
+<!-- FullCalendar -->
+
+{% block container %}
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left"></div>
+      </div>
+
+      
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <div class="col-md-2 col-sm-12 col-xs-12">
+            <a href="{% url 'reservations:selector' %}" class="btn btn-info"> <i class="fa fa-reply"></i>  </a>
+</div>
+        <h3>Calendario de Reservas {{hotel_name}}</h3>
+      
+            
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+
+            <div id='calendar_hotels'></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="CalenderModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        
+        <div class="col-md-8">
+        <h4 class="modal-title" id="myModalLabel2">Información de la Reserva</h4></div>
+        <div class="col-md-4">
+          <div class="row">
+        <a id="edition-link"  class="btn btn-warning"> <i class="fa fa-pencil"></i> Editar</a>
+       <a id="delete-link" class="btn btn-danger"> <i class="fa fa-close"></i> Eliminar </a>
+      </div>
+    </div>
+      </div>
+       
+    
+   
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+
+            <div class="col-md-6 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Nombre
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input name="id_room" class="form-control" readonly id="name_guest">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Teléfono
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="telephone_guest">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Cedula
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="id_guest">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Ciudad
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="city_guest">
+                </div>
+
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Ingreso
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="check_in">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Noches
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="nights">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Número de niños
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="number_childs">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Comisión
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="commission">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Total AMC
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="total_amc">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12">
+              <div class="form-group">
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Salida
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="salida">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Número de adultos
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="number_adults">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Tarifa
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="rate">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Total
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="total">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Responsable Registro
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="id_user_register">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Cerrar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="fc_create" data-toggle="modal" data-target="#CalenderModalNew"></div>
+<div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>
+{% endblock container %}
+
+{% block bottom_content %}
+
+
+<script src="{% static "vendors/moment/moment.js" %}"></script>
+    <script src="{% static "vendors/fullcalendar/dist/fullcalendar.js" %}" ></script>
+    <script src="{% static "vendors/fullcalendar/dist/lang/es.js" %}" ></script>
+<script type="text/javascript">
+/*function to validate that checkout value did not the same that checkin*/
+function formatDate(date) {
+ 
+  if (date == null) {
+return 'Sin estadía (El mismo de entrada).'
+  }
+   
+    else{
+      return date.toISOString().split('T')[0]
+    }
+}
+	/* CALENDAR */
+		  
+  function  init_calendar() {
+					
+          if( typeof ($.fn.fullCalendar) === 'undefined'){ return; }
+            
+          var date = new Date(),
+            d = date.getDate(),
+            m = date.getMonth(),
+            y = date.getFullYear(),
+            started,
+            categoryClass;
+  
+          var calendar = $('#calendar_hotels').fullCalendar({
+            locale:'es',
+            header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay,listMonth'
+            },
+            selectable: true,
+            selectHelper: true,
+            eventClick: function(calEvent, jsEvent, view) {
+
+					$('#fc_edit').click();
+					$('#name_guest').val(calEvent.name_guest);
+					$('#id_guest').val(calEvent.id_guest);
+					$('#telephone_guest').val(calEvent.telephone_guest);
+					$('#city_guest').val(calEvent.city_guest);
+					$('#check_in').val(calEvent.start.toISOString().split('T')[0]);
+					$('#salida').val(formatDate(calEvent.end));
+					$('#nights').val(calEvent.nights);
+					$('#number_adults').val(calEvent.number_adults);
+					$('#number_childs').val(calEvent.number_childs);
+					$('#rate').val(calEvent.rate);
+					$('#commission').val(calEvent.commission);
+					$('#total').val(calEvent.total);
+					$('#total_amc').val(calEvent.total_amc);
+					$('#id_user_register').val(calEvent.id_user_register);
+          var edition = document.getElementById('edition-link');
+          var delete_url = document.getElementById('delete-link');
+          var url1 = "/edicion_reserva/";
+          var url3 = "/borrar_reserva/";
+          var parameter=calEvent.id 
+          var url2= "/";
+          var url_edit= url1.concat(parameter).concat(url2);
+          var url_delete= url3.concat(parameter).concat(url2);
+          edition.href = url_edit;
+          delete_url.href=url_delete;
+					categoryClass = $("#event_type").val();
+          
+				
+
+					calendar.fullCalendar('unselect');
+				  },
+            editable: true,
+            events: [
+              {%for event in reservations%}
+              {
+            id:'{{event.id}}',
+            overlap:true,
+            name_guest:'{{event.name_guest}}',
+            telephone_guest:'{{event.telephone_guest}}',
+            city_guest:'{{event.city_guest}}',
+            id_guest:'{{event.id_guest}}',
+            name_guest:'{{event.name_guest}}',
+            title: '{{event.name_guest}} - {{event.id_room}}',
+            start: '{{event.check_in|date:"Y-m-d"}}',
+            end: '{{event.check_out|date:"Y-m-d"}}',
+            nights:'{{event.nights}}',
+            number_adults:'{{event.number_adults}}',
+            number_childs:'{{event.number_childs}}',
+            rate:'${{event.rate}}',
+            total:'${{event.total}}',
+            total_amc:'${{event.total_amc}}',
+            commission:'{{event.commission}}%',
+            id_user_register:'{{event.id_user_register.get_full_name}}',
+            {% if event.id_room.id_hotel.id == 1 %}
+            color: '#5cb85c',
+            {% elif event.id_room.id_hotel.id == 2 %}
+            color: '#5bc0de',
+            {% elif event.id_room.id_hotel.id == 3 %}
+            color: '#d9534f',
+            {% elif event.id_room.id_hotel.id == 4 %}
+            color: '#428bca',
+            {% elif event.id_room.id_hotel.id == 5 %}
+            color: '#5bc0de',
+
+            {%endif%}
+            },    {%endfor%}
+          ],
+         
+          
+          
+          });
+          
+        };
+       
+</script>
+{% endblock %}

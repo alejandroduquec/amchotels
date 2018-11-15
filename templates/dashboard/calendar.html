@@ -52,8 +52,10 @@
         <h4 class="modal-title" id="myModalLabel2">Información de la Reserva</h4></div>
         <div class="col-md-4">
           <div class="row">
+              {% if request.user.profile.role == 1%}
         <a id="edition-link"  class="btn btn-warning"> <i class="fa fa-pencil"></i> Editar</a>
        <a id="delete-link" class="btn btn-danger"> <i class="fa fa-close"></i> Eliminar </a>
+       {%endif%}
       </div>
     </div>
       </div>
@@ -166,6 +168,12 @@
                 </div>
               </div>
             </div>
+            <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+              Observaciones
+            </label>
+            <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+              <input class="form-control" readonly id="observations">
+            </div>
 
           </div>
 
@@ -245,10 +253,11 @@ return 'Sin estadía (El mismo de entrada).'
 					$('#total').val(calEvent.total);
 					$('#total_amc').val(calEvent.total_amc);
 					$('#id_user_register').val(calEvent.id_user_register);
+					$('#observations').val(calEvent.observations);
           var edition = document.getElementById('edition-link');
           var delete_url = document.getElementById('delete-link');
-          var url1 = "/reservas/edicion_reserva/";
-          var url3 = "/reservas/borrar_reserva/";
+          var url1 = "/edicion_reserva/";
+          var url3 = "/borrar_reserva/";
           var parameter=calEvent.id 
           var url2= "/";
           var url_edit= url1.concat(parameter).concat(url2);
@@ -281,8 +290,9 @@ return 'Sin estadía (El mismo de entrada).'
             rate:'${{event.rate}}',
             total:'${{event.total}}',
             total_amc:'${{event.total_amc}}',
-            commission:'{{event.rate}}%',
+            commission:'{{event.commission}}%',
             id_user_register:'{{event.id_user_register.get_full_name}}',
+            observations:'{{event.observations|default:"Ninguna"}}',
             {% if event.id_room.id_hotel.id == 1 %}
             color: '#5cb85c',
             {% elif event.id_room.id_hotel.id == 2 %}
