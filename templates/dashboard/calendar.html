@@ -73,7 +73,13 @@
                   Nombre
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input name="id_room" class="form-control" readonly id="name_guest">
+                  <input name="" class="form-control" readonly id="name_guest">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Habitación
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input name="" class="form-control" readonly id="id_room">
                 </div>
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Teléfono
@@ -81,27 +87,6 @@
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
                   <input class="form-control" readonly id="telephone_guest">
                 </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-sm-12 col-xs-12">
-              <div class="form-group">
-                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  Cedula
-                </label>
-                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" readonly id="id_guest">
-                </div>
-                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  Ciudad
-                </label>
-                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
-                  <input class="form-control" readonly id="city_guest">
-                </div>
-
-              </div>
-            </div>
-            <div class="col-md-6 col-sm-12 col-xs-12">
-              <div class="form-group">
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Ingreso
                 </label>
@@ -137,6 +122,24 @@
             <div class="col-md-6 col-sm-12 col-xs-12">
               <div class="form-group">
                 <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Cedula
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="id_guest">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Hotal
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="id_hotel">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  Ciudad
+                </label>
+                <div class="col-md-12 col-sm-12 col-xs-12" align="left">
+                  <input class="form-control" readonly id="city_guest">
+                </div>
+                <label class="col-md-12 col-sm-12 col-xs-12" align="left">
                   Salida
                 </label>
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
@@ -166,8 +169,11 @@
                 <div class="col-md-12 col-sm-12 col-xs-12" align="left">
                   <input class="form-control" readonly id="id_user_register">
                 </div>
+
               </div>
             </div>
+          
+         
             <label class="col-md-12 col-sm-12 col-xs-12" align="left">
               Observaciones
             </label>
@@ -240,6 +246,8 @@ return 'Sin estadía (El mismo de entrada).'
 
 					$('#fc_edit').click();
 					$('#name_guest').val(calEvent.name_guest);
+					$('#id_room').val(calEvent.id_room);
+					$('#id_hotel').val(calEvent.id_hotel);
 					$('#id_guest').val(calEvent.id_guest);
 					$('#telephone_guest').val(calEvent.telephone_guest);
 					$('#city_guest').val(calEvent.city_guest);
@@ -278,7 +286,9 @@ return 'Sin estadía (El mismo de entrada).'
             overlap:true,
             name_guest:'{{event.name_guest}}',
             telephone_guest:'{{event.telephone_guest}}',
-            city_guest:'{{event.city_guest}}',
+            id_room:'{{event.id_room}}',
+            id_hotel:'{{event.id_room.id_hotel}}',
+            city_guest:'{{event.city_guest|default:"Ninguna"}}',
             id_guest:'{{event.id_guest}}',
             name_guest:'{{event.name_guest}}',
             title: '{{event.name_guest}} - {{event.id_room}}',
