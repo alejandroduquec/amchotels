@@ -134,7 +134,7 @@ class Reports(LoginRequiredMixin,FormView):
                 end=end.replace(' ','')
                 start=datetime.datetime.strptime(start,'%m/%d/%Y').strftime('%Y-%m-%d')
                 end=datetime.datetime.strptime(end,'%m/%d/%Y').strftime('%Y-%m-%d')
-                reservations=Reservations.objects.filter(Q(id_room__in=rooms)&(Q(check_in__range=(start, end))|Q(check_out__range=(start, end)))).order_by('id')
+                reservations =Reservations.objects.filter(Q(id_room__in=rooms)&(Q(check_in__range=(start, end))|Q(check_out__range=(start, end)))).order_by('id')
             elif critery == '3':
                 month=int(data['month'])
                 reservations=Reservations.objects.filter(Q(id_room__in=rooms)&(Q(check_in__month=month)|Q(check_out__month=month))).order_by('id')

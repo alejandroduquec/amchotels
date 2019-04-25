@@ -10,9 +10,9 @@ from users.models import *
 class ProfileAdmin(admin.ModelAdmin):
     """ add profile admin to user  """
     #fields to show in model user
-    list_display=('pk', 'user', 'role')
+    list_display=('user', 'role','operator_hotel')
     # clickeable fields
-    list_display_links = ('user','role')
+    list_display_links = ('user','operator_hotel','role')
     #readonly fields
     readonly_fields=('created','modified')
 
