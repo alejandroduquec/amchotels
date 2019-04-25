@@ -44,7 +44,7 @@ class IndexView(LoginRequiredMixin,TemplateView):
             dic_money[i.name] = 0
         for i in reservations:
             #the pay is efective when user doing checkout
-            if i.check_out.month == today.month:
+            if i.check_out.month == today.month or i.check_in.month == today.month:
                 totalamc += int(i.total_amc)
                 
                 list_hotels[i.id_room.id_hotel.id] += 1

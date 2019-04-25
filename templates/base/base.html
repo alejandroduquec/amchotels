@@ -82,10 +82,9 @@
                 </li>
                 {% if request.user.profile.role == 1 %}
                 <li><a href="{% url 'reservations:report' %}"><i class="fa fa-area-chart"></i>Reportes</a>
-                
-                <li><a href="{% url 'reservations:report' %}"><i class="fa fa-area-chart"></i>Reportes</a>
-                
+              
                 </li>
+                {%endif%}
                 
               </ul>
             </div>
