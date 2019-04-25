@@ -71,10 +71,7 @@ def RegisterReservationView(request):
 
             if (check_out >= check_in):
                 #busca en el rango de la resrva no tener una superposicón con otra
-                #excepto si la fecha de entrada es igual a la de salida por calendario hotelero
-                busy_room=Reservations.objects.filter(Q(id_room_id=id_room)&(Q(check_in__range=(check_in, check_out))|Q(check_out__range=(check_in, check_out)))).exclude(Q(id_room_id=id_room)&(Q(check_out=check_in)|Q(check_in=check_out)))
-                print (busy_room.query)
-                #hotel ocupado por evento 
+                busy_room=Reservations.objects.filter(Q(id_room_id=id_room)&(Q(check_in__range=(check_in, check_out))|Q(check_out__range=(check_in, check_out))))
                 busy_hotel=RestrictionHotels.objects.filter(Q(id_hotel=id_room.id_hotel.id)&(Q(date_on__range=(check_in, check_out))|Q(date_on__range=(check_in, check_out))))
                 if busy_room or busy_hotel:
                     messages.error(request, "Habitación ocupada en el espacio de tiempo seleccionado!")
@@ -158,7 +155,6 @@ class UpdateReservation(LoginRequiredMixin,UpdateView):
 
     def get_object(self, queryset=None):
         """return object to edit"""
-        
         obj = Reservations.objects.get(id=self.kwargs['reservation'])
         return obj
     def get_context_data(self, *args, **kwargs):
@@ -177,7 +173,7 @@ class UpdateReservation(LoginRequiredMixin,UpdateView):
         check_out=data['check_out']
         reservation=Reservations.objects.get(id=self.kwargs['reservation'])
         if (check_out >= check_in):
-            busy_room=Reservations.objects.filter(Q(id_room_id=reservation.id_room)&(Q(check_in__range=(check_in, check_out))|Q(check_out__range=(check_in, check_out)))).exclude(id=reservation.id).exclude(Q(check_out=check_in)|Q(check_in=check_out))
+            busy_room=Reservations.objects.filter(Q(id_room_id=reservation.id_room)&(Q(check_in__range=(check_in, check_out))|Q(check_out__range=(check_in, check_out)))).exclude(id=reservation.id)
             busy_hotel=RestrictionHotels.objects.filter(Q(id_hotel=reservation.id_room.id_hotel.id)&(Q(date_on__range=(check_in, check_out))|Q(date_on__range=(check_in, check_out)))).exclude(id=reservation.id)
             if busy_room or busy_hotel:
                 messages.error(self.request, "Habitación ocupada en el espacio de tiempo seleccionado!")

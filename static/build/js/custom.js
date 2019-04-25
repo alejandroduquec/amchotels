@@ -1744,7 +1744,8 @@ if (typeof NProgress != 'undefined') {
 			});
 			$('#single_cal3').daterangepicker({
 			  singleDatePicker: true,
-			  singleClasses: "picker_3"
+				singleClasses: "picker_3"
+				
 			}, function(start, end, label) {
 			  console.log(start.toISOString(), end.toISOString(), label);
 			});

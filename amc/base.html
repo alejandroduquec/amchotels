@@ -62,28 +62,20 @@
             <div class="menu_section">
               <h3>Menú Principal</h3>
               <ul class="nav side-menu">
-                {% if request.user.profile.role == 1 %}
-                  
-           
                 <li><a href="{% url 'reservations:index' %}"><i class="fa fa-home"></i>Inicio</a>  
                 </li>
                 <li><a href="{% url 'reservations:register' %}"><i class="fa fa-edit"></i>Registro</a>  
                 </li>
-                     {% endif %}
+                
                 
                 <li><a><i class="fa fa-table"></i> Consulta Reservas <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
                     <li><a href="{% url 'reservations:selector' %}">Por Hoteles</a></li>
-                    {% if request.user.profile.role == 1 %}
                     <li><a href="{% url 'reservations:calendar' 0 %}">General</a></li>
-                {% endif %}
-                    
                   </ul>
                 </li>
-                {% if request.user.profile.role == 1 %}
-                <li><a href="{% url 'reservations:report' %}"><i class="fa fa-area-chart"></i>Reportes</a>
                 
-                <li><a href="{% url 'reservations:report' %}"><i class="fa fa-area-chart"></i>Reportes</a>
+                <li><a href="{% url 'reservations:report'%}"><i class="fa fa-area-chart"></i>Reportes</a>
                 
                 </li>
                 

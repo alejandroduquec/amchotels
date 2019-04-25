@@ -2,14 +2,12 @@
 {% load staticfiles %}
 {% block head_content %}
 
-<link href="{% static "vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" %} " rel=" stylesheet">
-<link href="{% static "vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" %} " rel=" stylesheet">
-<link href="{% static "vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" %} " rel=" stylesheet">
-<link href="{% static "vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" %} " rel=" stylesheet">
-<link href="{% static "vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" %} " rel=" stylesheet">
-<style>
+<link href="{% static "vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" %} " rel="stylesheet">
+<link href="{% static "vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" %} " rel="stylesheet">
+<link href="{% static "vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" %} " rel="stylesheet">
+<link href="{% static "vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" %} " rel="stylesheet">
+<link href="{% static "vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" %} " rel="stylesheet">
 
-</style>
 {% endblock head_content %}
 <!-- FullCalendar -->
 
@@ -31,7 +29,7 @@
     <div class="clearfix"></div>
 
     <div class="row">
-      <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="col-md-12">
         <div class="x_panel">
           <div class="x_title">
             <h2>Seleccione criterios</h2>
@@ -147,9 +145,12 @@
                       <th>Noches</th>
                       <th>Adultos</th>
                       <th>Niños</th>
+
+
                       <th class="sum">Total</th>
                       <th class="sum">Total AMC</th>
-                      <th>Obser.</th>
+
+
                     </tr>
                   </thead>
                   <tbody>
@@ -167,11 +168,8 @@
                       <td>{{reservation.nights}}</td>
                       <td>{{reservation.number_adults}}</td>
                       <td>{{reservation.number_childs}}</td>
-                  
-                      <td>{{reservation.total|floatformat:"0"}}</td>
-                      <td >{{reservation.total_amc|floatformat:"0"}}</td>
-                      <td >{{reservation.observations|default:"Ninguna"}}</td>
-                      
+                      <td>{{reservation.rate}}</td>
+                      <td>{{reservation.total_amc}}</td>
 
 
                     </tr>
@@ -194,7 +192,6 @@
                           <th>
                               Total
                           </th>
-                          <th></th>
                           <th></th>
                           <th></th>
 
@@ -224,7 +221,6 @@
 {% endblock container %}
 {% block bottom_content %}
 <!-- Datatables -->
-<!-- Datatables -->
 <script src="{% static "vendors/datatables.net/js/jquery.dataTables.min.js" %} "></script>
 <script src="{% static "vendors/datatables.net-bs/js/dataTables.bootstrap.min.js" %} "></script>
 <script src="{% static "vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js" %} "></script>
@@ -234,13 +230,13 @@
 <script src="{% static "vendors/datatables.net-scroller/js/dataTables.scroller.min.js" %} "></script>
 
 
-<script src=" {% static "vendors/Buttons-1.5.1/js/dataTables.buttons.min.js" %} "></script>
-<script src=" {% static "vendors/Buttons-1.5.1/js/buttons.flash.min.js" %} "></script>
-<script src=" {% static "vendors/JSZip-2.5.0/jszip.min.js" %} "></script>
-<script src=" {% static "vendors/pdfmake-0.1.32/pdfmake.min.js" %} "></script>
-<script src=" {% static "vendors/pdfmake-0.1.32/vfs_fonts.js" %} "></script>
-<script src=" {% static "vendors/Buttons-1.5.1/js/buttons.html5.min.js" %} "></script>
-<script src=" {% static "vendors/Buttons-1.5.1/js/buttons.print.min.js" %}"></script>
+<script src="{% static "vendors/Buttons-1.5.1/js/dataTables.buttons.min.js" %} "></script>
+<script src="{% static "vendors/Buttons-1.5.1/js/buttons.flash.min.js" %} "></script>
+<script src="{% static "vendors/JSZip-2.5.0/jszip.min.js" %} "></script>
+<script src="{% static "vendors/pdfmake-0.1.32/pdfmake.min.js" %} "></script>
+<script src="{% static "vendors/pdfmake-0.1.32/vfs_fonts.js" %} "></script>
+<script src="{% static "vendors/Buttons-1.5.1/js/buttons.html5.min.js" %} "></script>
+<script src="{% static "vendors/Buttons-1.5.1/js/buttons.print.min.js" %} "></script>
 <script>
   $(document).ready(function () {
 
@@ -273,7 +269,7 @@
       var table = $('#datatable-reservations').dataTable({
         language: idioma_espanol,
         stateSave: true,
-        responsive: true,
+        responsive: false,
         dom: 'Blfrtip',
         
         buttons: [
