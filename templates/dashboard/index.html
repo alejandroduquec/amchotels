@@ -110,22 +110,16 @@
         echartDonut.setOption({
             tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                formatter: "{a}<br/>{b}:{c}({d}%)"
             },
-            calculable: true,
+            calculable: false,
             legend: {
                 x: 'center',
                 y: 'bottom',
-                 data: [
-                     {% for data  in hotels %}
-                    
-                        '{{data.name}}',
-                   
-                    {% endfor %}
-             ]
+                 data: [{% for data  in hotels %}'{{data.name}}',{% endfor %}]
             },
             toolbox: {
-                show: true,
+                show: false,
                 feature: {
                     magicType: {
                         show: true,
@@ -139,24 +133,17 @@
                             }
                         }
                     },
-                    restore: {
-                        show: true,
-                        title: "Restore"
-                    },
-                    saveAsImage: {
-                        show: true,
-                        title: "Save Image"
-                    }
+                    
                 }
             },
             series: [{
-                name: 'Porcentaje Poblacion',
+                name: 'Porcentaje',
                 type: 'pie',
                 radius: ['35%', '55%'],
                 itemStyle: {
                     normal: {
                         label: {
-                            show: true
+                            show: false
                         },
                         labelLine: {
                             show: true
@@ -173,17 +160,8 @@
                         }
                     }
                 },
-                data: [
-                    
-                    {% for data  in hotels %}
-                    
-                       {value: {{reservations_hotels}}[{{forloop.counter}}],
-                       name:'{{data.name}}'},
-                   
-                    {% endfor %}
-                    
-                    
-                    ]
+                data: [{% for data  in hotels %}{value: {{reservations_hotels}}[{{forloop.counter}}],
+                name:'{{data.name}}'},{% endfor %}]
             }]
         });
         });
