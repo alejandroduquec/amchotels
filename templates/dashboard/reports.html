@@ -138,8 +138,8 @@
                     <tr>
                       <th>Habitación</th>
                       <th>Nombre</th>
-                      <th>Teléfono</th>
-                      <th>Cédula</th>
+                      <!-- <th>Teléfono</th>
+                      <th>Cédula</th> -->
                       <th>Check in</th>
                       <th>Check out</th>
                       <th>Noches</th>
@@ -162,16 +162,16 @@
                       <td>{{reservation.id_room}}</td>
 
                       <td>{{reservation.name_guest}}</td>
-                      <td>{{reservation.telephone_guest}}</td>
-                      <td>{{reservation.id_guest}}</td>
+                      <!-- <td>{{reservation.telephone_guest}}</td>
+                      <td>{{reservation.id_guest}}</td> -->
                       <td>{{reservation.check_in|date:"Y-m-d"}}</td>
                       <td>{{reservation.check_out|date:"Y-m-d"}}</td>
                       <td>{{reservation.nights}}</td>
                       <td>{{reservation.number_adults}}</td>
                       <td>{{reservation.number_childs}}</td>
                       <td>{{reservation.observations}}</td>
-                      <td>{{reservation.rate}}</td>
-                      <td>{{reservation.total_amc}}</td>
+                      <td>{{reservation.rate|floatformat}}</td>
+                      <td>{{reservation.total_amc|floatformat}}</td>
 
 
                     </tr>
@@ -186,8 +186,8 @@
                           <th>
                             </th>
                           <th></th>
-                          <th></th>
-                          <th></th>
+                          <!-- <th></th>
+                          <th></th> -->
                           <th></th>
                           <th></th>
                           <th></th>
@@ -268,7 +268,7 @@
       var table = $('#datatable-reservations').dataTable({
         language: idioma_espanol,
         stateSave: true,
-        responsive: true,
+        responsive: false,
         dom: 'Blfrtip',
         
         buttons: [
