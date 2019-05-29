@@ -53,10 +53,10 @@ class Reservations(models.Model):
     nights=models.IntegerField()
     number_adults=models.PositiveIntegerField(default=1)
     number_childs=models.PositiveIntegerField(default=0,blank=True, null=True)
-    rate= models.FloatField()
+    rate= models.IntegerField()
     commission=models.FloatField()
-    total=models.FloatField()
-    total_amc = models.FloatField()
+    total=models.IntegerField()
+    total_amc = models.IntegerField()
     observations=models.CharField(max_length=500,blank=True, null=True)
 
 
