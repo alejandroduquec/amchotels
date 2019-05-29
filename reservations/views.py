@@ -72,8 +72,16 @@ def RegisterReservationView(request):
             if (check_out >= check_in):
                 #busca en el rango de la resrva no tener una superposicón con otra
                 #excepto si la fecha de entrada es igual a la de salida por calendario hotelero
-                busy_room=Reservations.objects.filter(Q(id_room_id=id_room)&(Q(check_in__range=(check_in, check_out))|Q(check_out__range=(check_in, check_out)))).exclude(Q(id_room_id=id_room)&(Q(check_out=check_in)|Q(check_in=check_out)))
-                print (busy_room.query)
+                busy_room=Reservations.objects.filter(
+                    Q(id_room_id=id_room)&
+                    (Q(check_in__range=(check_in, check_out))|Q(check_out__range=(check_in, check_out)))
+                    ).exclude(Q(id_room_id=id_room)&(Q(check_out=check_in)|Q(check_in=check_out)))
+                if check_in == check_out and not busy_room:
+                    day = check_in
+                    busy_room = Reservations.objects.filter(
+                        id_room_id=id_room,
+                        check_in__lte=day,
+                        check_out__gt=day)
                 #hotel ocupado por evento 
                 busy_hotel=RestrictionHotels.objects.filter(Q(id_hotel=id_room.id_hotel.id)&(Q(date_on__range=(check_in, check_out))|Q(date_on__range=(check_in, check_out))))
                 if busy_room or busy_hotel:
