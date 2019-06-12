@@ -38,7 +38,7 @@
 
               {% for hotel in hotels%}
               
-              {% if request.user.profile.role == 3 and hotel.id == request.user.profile.operator_hotel.pk %}
+              {% if user.profile.role == 3 and hotel.id == user.profile.operator_hotel.pk %}
                 
               
               <a href="{% url 'reservations:calendar' hotel.id %}">
@@ -53,7 +53,7 @@
                   </div>
                 </div>
               </div></a>
-              {%elif request.user.profile.role != 3%}
+              {%elif user.profile.role != 3%}
               <a href="{% url 'reservations:calendar' hotel.id %}">
                   <div class="col-md-55">
                     <div class="thumbnail">

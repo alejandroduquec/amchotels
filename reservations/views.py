@@ -1,6 +1,7 @@
 """ Post views """
 #Django
-from django.shortcuts import render, redirect
+from django.http import Http404
+from django.shortcuts import render , redirect,resolve_url
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -29,7 +30,15 @@ class IndexView(LoginRequiredMixin,TemplateView):
     """View for Index"""
     template_name='dashboard/index.html'
 
+    def get(self, request, *args, **kwargs):
+        role =int(self.request.user.profile.role)
+        if role in [2, 3]:
+            raise Http404 
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
     def get_context_data(self,**kwargs):
+        
         context=super().get_context_data(**kwargs)
         hotels=Hotels.objects.all()
         context['hotels']=hotels
@@ -120,6 +129,13 @@ class Reports(LoginRequiredMixin,FormView):
     """Reports View"""
     template_name='dashboard/reports.html'
     form_class=ReportsForms
+
+    def get(self, request, *args, **kwargs):
+        role =int(self.request.user.profile.role)
+        if role in [2, 3]:
+            raise Http404 
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):
         """On post to report"""
@@ -164,6 +180,13 @@ class UpdateReservation(LoginRequiredMixin,UpdateView):
     template_name='dashboard/editor_register.html'
     second_form_class=HotelsForms
 
+    def get(self, request, *args, **kwargs):
+        role =int(self.request.user.profile.role)
+        if role in [2, 3]:
+            raise Http404 
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
     def get_object(self, queryset=None):
         """return object to edit"""
         
@@ -203,6 +226,13 @@ class DeleteReservationView(LoginRequiredMixin,DeleteView):
     template_name='dashboard/delete_confirmation.html'
     context_object_name='reservation'
 
+    def get(self, request, *args, **kwargs):
+        role =int(self.request.user.profile.role)
+        if role in [2, 3]:
+            raise Http404 
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
     def get_object(self, queryset=None):
         """Get object to delete"""
         obj = Reservations.objects.get(id=self.kwargs['reservation'])
@@ -222,5 +252,5 @@ def ajax_get_rooms(request):
         rooms=Rooms.objects.filter(id_hotel=int(hotel))
         html_options=''
         for room in rooms:
-            html_options += '<option value="{0}" label="{1}"></option>'.format(room.id,room.name)
+            html_options += '<option value="{0}">{1}</option>'.format(room.id,room.name)
         return HttpResponse(html_options)

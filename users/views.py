@@ -13,11 +13,11 @@ class LoginView(auth_views.LoginView):
     template_name='base/login.html'
     def get_success_url(self):
         role=self.request.user.profile.role
-        if role ==3:
+        if role  in [3 ,2]:
             return resolve_url('reservations:selector')
         elif role == 1:
             url = self.get_redirect_url()
-            return url or resolve_url(settings.LOGIN_REDIRECT_URL)
+            return resolve_url(settings.LOGIN_REDIRECT_URL)
         
 
         

@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>AMC Reservas</title>
     <link rel="shortcut icon" href="{% static "images/amc.png" %}">
-   
+  
     <!-- Bootstrap -->
     <link href="{% static "vendors/bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
     <!-- Font Awesome -->
@@ -40,7 +40,7 @@
             <a href="{% url 'reservations:index' %}" class="site_title"><i class="fa fa-calendar"></i> <span>Reservas AMC</span></a>
           </div>
           
-
+          
           <div class="clearfix"></div>
 
           <!-- menu profile quick info -->
@@ -50,7 +50,8 @@
             </div>
             <div class="profile_info">
               <span>Bienvenido.</span>
-              <h2>{{request.user.get_full_name}}</h2>
+              
+              <h2>{{user.get_full_name}}</h2>
             </div>
           </div>
           <!-- /menu profile quick info -->
@@ -62,7 +63,7 @@
             <div class="menu_section">
               <h3>Menú Principal</h3>
               <ul class="nav side-menu">
-                {% if request.user.profile.role == 1 %}
+                {% if user.profile.role == 1 %}
                   
            
                 <li><a href="{% url 'reservations:index' %}"><i class="fa fa-home"></i>Inicio</a>  
@@ -74,13 +75,13 @@
                 <li><a><i class="fa fa-table"></i> Consulta Reservas <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
                     <li><a href="{% url 'reservations:selector' %}">Por Hoteles</a></li>
-                    {% if request.user.profile.role == 1 %}
+                    {% if user.profile.role == 1 %}
                     <li><a href="{% url 'reservations:calendar' 0 %}">General</a></li>
                 {% endif %}
                     
                   </ul>
                 </li>
-                {% if request.user.profile.role == 1 %}
+                {% if user.profile.role == 1 %}
                 <li><a href="{% url 'reservations:report' %}"><i class="fa fa-area-chart"></i>Reportes</a>
               
                 </li>
@@ -115,7 +116,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="{% static "images/amc.png" %}" alt="">{{request.user.get_full_name}}
+                    <img src="{% static "images/amc.png" %}" alt="">{{user.get_full_name}}
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">

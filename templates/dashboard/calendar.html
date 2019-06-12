@@ -52,7 +52,7 @@
         <h4 class="modal-title" id="myModalLabel2">Información de la Reserva</h4></div>
         <div class="col-md-4">
           <div class="row">
-              {% if request.user.profile.role == 1%}
+              {% if user.profile.role == 1%}
         <a id="edition-link"  class="btn btn-warning"> <i class="fa fa-pencil"></i> Editar</a>
        <a id="delete-link" class="btn btn-danger"> <i class="fa fa-close"></i> Eliminar </a>
        {%endif%}
