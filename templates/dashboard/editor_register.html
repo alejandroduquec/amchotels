@@ -343,6 +343,10 @@ input:focus+.msg { opacity:1; }
           });
 {%endif%}
 
+hotel_pre_charged = document.getElementById("id_hotel").value;
+if (hotel_pre_charged){
+  SelectRoom();
+}
 /*Function to calcle total*/
 function CalcleTotal(){
   var nights=Number(document.getElementById("id_nights").value);
