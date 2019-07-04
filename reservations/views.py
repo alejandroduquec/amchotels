@@ -280,9 +280,15 @@ def ajax_get_rooms(request):
     """Ajax to return the rooms for each hotel"""
     if request.method == 'POST':
         hotel = request.POST['hotel']
+        selected = request.POST.get('selected', None)
         rooms = Rooms.objects.filter(id_hotel=int(hotel))
         html_options = ''
+    
         for room in rooms:
-            html_options += '<option value="{0}">{1}</option>'.format(
+            if selected and str(room.id) == str(selected):
+                html_options += '<option value="{0}" selected>{1}</option>'.format(
                 room.id, room.name)
+            else:
+                html_options += '<option value="{0}">{1}</option>'.format(
+                    room.id, room.name)
         return HttpResponse(html_options)

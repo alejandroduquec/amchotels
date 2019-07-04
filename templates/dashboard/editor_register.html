@@ -342,10 +342,10 @@ input:focus+.msg { opacity:1; }
             button: 'OK'
           });
 {%endif%}
-
+id_room =document.getElementById("id_id_room").value; 
 hotel_pre_charged = document.getElementById("id_hotel").value;
 if (hotel_pre_charged){
-  SelectRoom();
+  SelectRoom(id_room);
 }
 /*Function to calcle total*/
 function CalcleTotal(){
@@ -387,13 +387,14 @@ function formatDate(date) {
 
     $('#myModal').modal('hide');
   }
-  function SelectRoom() {
+  function SelectRoom(selected) {
     /*function to select the rooms asociated to the hotel*/
     $.ajax({
 
       url: '{% url 'reservations:ajax_get_rooms' %}',
       data: {
         hotel: $('#id_hotel').val(),
+        selected: selected,
 
         'csrfmiddlewaretoken': '{{ csrf_token }}'
 
